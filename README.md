@@ -4,6 +4,10 @@ Small toolkit for making video with [HyperFrames](https://github.com/heygen-com/
 
 HyperFrames renders plain HTML, CSS and a paused GSAP timeline into a deterministic MP4. It is genuinely good, and it ships a pack of agent skills full of useful craft. Two things bit us while adopting it, and this repo is what came out of fixing them.
 
+![demo](demo.gif)
+
+*This clip was rendered with the toolkit. Source: `examples/self-promo/`.*
+
 ## What happened
 
 **`npx hyperframes init` deleted our skill directory. Twice.**
@@ -28,7 +32,9 @@ bin/hf                    wrapper: sets the env guard, pins the version, verifie
 scripts/vendor.sh         pull upstream skills into a directory you name, then declaw them
 scripts/declaw.py         strip the self-acting instructions; prints a check at the end
 scripts/contact_sheet.sh  grid of frames from a render, for reviewing a video you cannot watch
+scripts/score.py          generate a music bed timed to your scene cuts
 templates/starter/        minimal composition with the determinism rules written down
+examples/self-promo/      the clip above, as a build script
 ```
 
 Nothing here replaces HyperFrames. The renderer is upstream's and stays upstream's; this is the layer around it.
