@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <!-- Vendor GSAP locally. The upstream scaffold pulls it from a CDN without
+         subresource integrity, and a render should not depend on the network. -->
+    <script src="gsap.min.js"></script>
+    <style>
+      /* Local fonts only: a render must be deterministic and offline.
+         If your text is not Latin, check that the font file covers the script -
+         a missing subset falls back silently and you find out from the render.
+      @font-face { font-family: "Display"; src: url("fonts/display.woff2") format("woff2"); }
+      */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0b0b0d; }
+      #root { position: relative; width: 1920px; height: 1080px; }
+
+      #title {
+        position: absolute; left: 120px; top: 430px;
+        font-family: system-ui, sans-serif; font-weight: 800; font-size: 150px;
+        letter-spacing: -4px; line-height: 0.95; color: #f0efe9;
+      }
+      #sub {
+        position: absolute; left: 126px; top: 620px;
+        font-family: system-ui, sans-serif; font-size: 44px; color: #9a9a92;
+      }
+      #rule {
+        position: absolute; left: 120px; top: 320px; width: 1680px; height: 6px;
+        background: #e0523f; transform-origin: left center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Timing lives in data-* attributes; every timed element carries class="clip".
+         Tracks must not collide: one index per element. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="6"
+         data-width="1920" data-height="1080">
+      <div id="rule" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+      <div id="title" class="clip" data-start="0" data-duration="6" data-track-index="1">Your title</div>
+      <div id="sub" class="clip" data-start="0" data-duration="6" data-track-index="2">one line that earns the next second</div>
+    </div>
+
+    <script>
+      /* One paused timeline registered on window.__timelines[<composition-id>].
+         The renderer seeks it frame by frame, so everything must be declarative:
+         no wall-clock, no Math.random, no measuring layout inside a tween.
+         Render workers initialise tweens independently - a function-valued tween
+         would give a different result per worker. Compute constants up front. */
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.from("#rule",  { scaleX: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.from("#title", { y: 80, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.15);
+      tl.from("#sub",   { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

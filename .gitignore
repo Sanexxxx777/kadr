@@ -1,0 +1,6 @@
+references/
+UPSTREAM-LICENSE
+node_modules/
+renders/
+*.mp4
+.DS_Store

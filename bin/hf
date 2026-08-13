@@ -1,0 +1,43 @@
+#!/bin/zsh
+# Wrapper around the HyperFrames CLI.
+#
+# Why it exists: `npx hyperframes init` deletes and replaces a directory named
+# `hyperframes` under ~/.claude/skills, and it writes several more skills there
+# without asking. If that is where you keep your own vendored copy, your work is
+# gone. The opt-out is an environment variable; the `--skip-skills` flag is
+# deliberately ignored by the CLI.
+#
+# The wrapper sets the variable, pins the version, and verifies afterwards that
+# your guarded directory still has the same number of entries.
+#
+#   hf init my-video --example blank
+#   hf check | hf preview | hf render
+#
+# Config (override in your environment):
+#   HF_VERSION   pinned CLI version
+#   HF_GUARD     directory to watch; unset to skip the check
+set -e
+
+export HYPERFRAMES_SKIP_SKILLS=1     # keep the CLI out of your skills folder
+export HYPERFRAMES_NO_TELEMETRY=1    # anonymous render telemetry off
+
+HF_VERSION="${HF_VERSION:-0.7.107}"
+HF_GUARD="${HF_GUARD:-}"
+
+if [ -n "$HF_GUARD" ] && [ -d "$HF_GUARD" ]; then
+  BEFORE=$(ls "$HF_GUARD" | wc -l)
+else
+  BEFORE=""
+fi
+
+npx --yes "hyperframes@${HF_VERSION}" "$@"
+STATUS=$?
+
+if [ -n "$BEFORE" ]; then
+  AFTER=$(ls "$HF_GUARD" | wc -l)
+  if [ "$AFTER" -lt "$BEFORE" ]; then
+    echo "hf: guarded directory shrank during this command ($BEFORE -> $AFTER entries): $HF_GUARD" >&2
+  fi
+fi
+
+exit $STATUS
