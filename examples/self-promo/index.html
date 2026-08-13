@@ -25,7 +25,7 @@
       #ruleL { left: 150px; width: 720px; }
       #ruleR { left: 1050px; width: 720px; }
 
-      /* левая половина: код композиции */
+      /* left half: the composition source */
       .cl {
         position: absolute; left: 150px;
         font-family: "JB", monospace; font-weight: 400; font-size: 34px;
@@ -33,7 +33,7 @@
       }
       .cl:nth-child(2) { color: #ede4d3; }
 
-      /* правая половина: то, что из него получается */
+      /* right half: what it renders into */
       #frame {
         position: absolute; left: 1050px; top: 330px; width: 720px; height: 405px;
         border: 2px solid #25252b; background: #111;
@@ -46,7 +46,7 @@
       #shot2 { color: #ee4e4e; }
       #playhead { position: absolute; left: 0; bottom: 0; height: 5px; background: #ee4e4e; width: 720px; transform-origin: left center; }
 
-      /* финал */
+      /* ending */
       #brand {
         position: absolute; left: 150px; top: 380px;
         font-family: "Oswald", sans-serif; font-weight: 700; font-size: 220px;
@@ -114,7 +114,7 @@
       tl.from("#ruleR", { scaleX: 0, duration: 0.6, ease: "power3.out" }, 1.6);
       tl.from("#frame", { opacity: 0, x: 40, duration: 0.5, ease: "power3.out" }, 1.75);
       tl.from("#shot", { y: 60, opacity: 0, duration: 0.7, ease: "power3.out" }, 2.2);
-      /* полоса воспроизведения идёт ровно столько, сколько живёт кадр */
+      /* the playhead runs exactly as long as the frame is on screen */
       tl.from("#playhead", { scaleX: 0, duration: 5.9, ease: "none" }, 1.9);
 
       tl.set("#shot2", { y: 60, opacity: 0 }, 0);

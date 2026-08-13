@@ -172,4 +172,4 @@ HTML = f"""<!doctype html>
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 open(OUT, "w", encoding="utf-8").write(HTML)
-print(f"написано: {OUT}")
+print(f"wrote: {OUT}")
